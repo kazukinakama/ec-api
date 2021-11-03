@@ -43,3 +43,11 @@ services:
       TZ: 'Asia/Tokyo'
     volumes:
       - mysql-volume:/var/lib/mysql
+
+  mailhog:
+    build:
+      context: .
+      dockerfile: ./docker/mailhog/Dockerfile
+    ports:
+      - "${SMTP_PORT}:1025"
+      - "${HTTP_PORT}:8025"
