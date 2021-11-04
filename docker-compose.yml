@@ -12,11 +12,11 @@ services:
       - ./src/:/var/www/html
     environment:
       - DB_CONNECTION=mysql
-      - DB_HOST=db
+      - DB_HOST=mysql
       - DB_PORT=3306
-      - DB_DATABASE=${DB_NAME}
-      - DB_USERNAME=${DB_USER}
-      - DB_PASSWORD=${DB_PASSWORD}
+      - DB_DATABASE=${DB_DATABASE:-laravel}
+      - DB_USERNAME=${DB_USER:-user}
+      - DB_PASSWORD=${DB_PASSWORD:-password}
 
   nginx:
     build:
@@ -36,11 +36,13 @@ services:
     ports:
       - ${DB_PORT}:3306
     environment:
-      MYSQL_DATABASE: ${DB_NAME}
-      MYSQL_USER: ${DB_USER}
-      MYSQL_PASSWORD: ${DB_PASSWORD}
-      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${DB_DATABASE:-laravel}
+      MYSQL_USER: ${DB_USER:-user}
+      MYSQL_PASSWORD: ${DB_PASSWORD:-password}
+      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD:-password}
       TZ: 'Asia/Tokyo'
+    depends_on:
+      - php 
     volumes:
       - mysql-volume:/var/lib/mysql
 
