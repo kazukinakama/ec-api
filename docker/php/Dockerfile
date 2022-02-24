@@ -1,18 +1,13 @@
-FROM php:8.0-fpm
+FROM php:8.1-fpm
 
-COPY ./docker/php/php.ini /usr/local/etc/php/php.ini
-
-COPY --from=composer:2.0 /usr/bin/composer /usr/bin/composer
-
-COPY --from=node:16.13 /usr/local/bin /usr/local/bin
-COPY --from=node:16.13 /usr/local/lib /usr/local/lib
+COPY --from=composer:2.2 /usr/bin/composer /usr/bin/composer
 
 RUN apt-get update && \
-    apt-get -y install \
-    git \
-    zip \
-    unzip \
-    vim \
-    && docker-php-ext-install pdo_mysql bcmath
+  apt-get -y install --no-install-recommends git unzip libzip-dev libicu-dev libonig-dev && \
+  apt-get clean && \
+  rm -rf /var/lib/apt/lists/* && \
+  docker-php-ext-install intl pdo_mysql zip bcmath
+
+COPY ./docker/php/php.ini /usr/local/etc/php/php.ini
 
 WORKDIR /var/www/html
