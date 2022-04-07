@@ -8,41 +8,42 @@ services:
     build:
       context: .
       dockerfile: ./docker/php/Dockerfile
+    depends_on:
+      mysql:
+        condition: service_healthy
     volumes:
-      - ./src/:/var/www/html
+      - ./src/:/app
     environment:
       - DB_CONNECTION=mysql
       - DB_HOST=mysql
       - DB_PORT=3306
-      - DB_DATABASE=${DB_DATABASE:-laravel}
-      - DB_USERNAME=${DB_USER:-user}
-      - DB_PASSWORD=${DB_PASSWORD:-password}
+      - DB_DATABASE=laravel
+      - DB_USERNAME=root
+      - DB_PASSWORD=password
 
   nginx:
     build:
       context: .
       dockerfile: ./docker/nginx/Dockerfile
     ports:
-      - ${WEB_PORT}:80
+      - 80:80
     depends_on:
       - php
     volumes:
-      - ./src/:/var/www/html
+      - ./src/public:/app/public
 
   mysql:
     build:
       context: .
       dockerfile: ./docker/mysql/Dockerfile
     ports:
-      - ${DB_PORT}:3306
+      - 3306:3306
     environment:
-      MYSQL_DATABASE: ${DB_DATABASE:-laravel}
-      MYSQL_USER: ${DB_USER:-user}
-      MYSQL_PASSWORD: ${DB_PASSWORD:-password}
-      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD:-password}
+      MYSQL_DATABASE: laravel
+      MYSQL_USER: root
+      MYSQL_PASSWORD: password
+      MYSQL_ROOT_PASSWORD: password
       TZ: 'Asia/Tokyo'
-    depends_on:
-      - php 
     volumes:
       - mysql-volume:/var/lib/mysql
 
@@ -51,5 +52,5 @@ services:
       context: .
       dockerfile: ./docker/mailhog/Dockerfile
     ports:
-      - "${SMTP_PORT}:1025"
-      - "${HTTP_PORT}:8025"
+      - 1025:1025
+      - 8025:8025

@@ -10,4 +10,4 @@ RUN apt-get update && \
 
 COPY ./docker/php/php.ini /usr/local/etc/php/php.ini
 
-WORKDIR /var/www/html
+WORKDIR /app
