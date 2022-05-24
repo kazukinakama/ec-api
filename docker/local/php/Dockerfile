@@ -8,6 +8,6 @@ RUN apt-get update && \
   rm -rf /var/lib/apt/lists/* && \
   docker-php-ext-install intl pdo_mysql zip bcmath
 
-COPY ./docker/php/php.ini /usr/local/etc/php/php.ini
+COPY ./docker/local/php/php.ini /usr/local/etc/php/php.ini
 
 WORKDIR /app
