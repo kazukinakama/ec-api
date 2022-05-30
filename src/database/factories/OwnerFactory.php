@@ -4,7 +4,7 @@ namespace Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
 
-class UserFactory extends Factory
+class OwnerFactory extends Factory
 {
     public function definition(): array
     {
@@ -16,12 +16,12 @@ class UserFactory extends Factory
             'prefecture' => $this->faker->prefecture,
             'city' => $this->faker->city,
             'street_address' => $this->faker->streetAddress,
-            'tel' => $this->faker->numerify('090########'),
+            'tel' => $this->faker->numerify('080########'),
             'email_verified_at' => now(),
         ];
     }
 
-    public function unverified(): static
+    public function unverified(): Factory
     {
         return $this->state(function (array $attributes) {
             return [
